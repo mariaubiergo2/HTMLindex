@@ -13,24 +13,34 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script>
-  $(document).ready(function(){
-    $("#btn1").click(function(){
+  $(document).ready(function() {
+    $("#btn1").click(function () {
       $.ajax({
         type: 'GET',
-        url: 'https://api.github.com/users/'+$("#user").val()+'/repos',
-        data: { get_param: 'value'},
-        success: function(data){
-          alert(data);
+        url: 'https://api.github.com/users/' + $("#user").val() + '/repos',
+        data: {get_param: 'value'},
+        dataType: 'text',
+        success: function (data) {
+          var json = $.parseJSON(data);
+          $("#tableUser").append('<tbody id="bodyTable">')
 
+          for (var i = 0; i < json.length; i++) {
+            $("#tableUser").append('<tr>' +
+                    '<td>' + json[i].name + '</td>' +
+                    '<td>' + json[i].description + '</td>' +
+                    '<td>' + json[i].stragazers_count + '</td>' +
+                    '</tr>');
+          }
+          $('tableUser').append('</tbody>');
         }
-      })
+      });
     });
   });
-
 </script>
 </head>
 <body>
@@ -41,21 +51,21 @@
 </div>
 
 <div id="login">
-  <p>Github username: <input id="user" type="text" value="mariaubiergo2"></p>
+  <p>Github username: <input id="user" type="text" value=""></p>
   <button id="btn1">Show repositories</button>
 </div>
 
-<table>
-  <tr>
-    <th>User</th>
-    <th>Description</th>
-    <th>Number of followers</th>
-  </tr>
-  <tbody id="bodyTable">
-
-  </tbody>
-</table>
-
+<div id="table">
+  <table id="tableUser">
+    <thread>
+      <tr>
+        <th>User</th>
+        <th>Description</th>
+        <th>Number of followers</th>
+      </tr>
+    </thread>
+  </table>
+</div>
 
 
 </body>
